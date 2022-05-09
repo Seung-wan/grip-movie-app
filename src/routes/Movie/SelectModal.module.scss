@@ -1,0 +1,28 @@
+@use '/src/styles/constants/colors';
+
+.modalContainer {
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  width: 388px;
+  height: 253px;
+  background: #2b2b36;
+  border: 2px solid red;
+  border-radius: 12px;
+  opacity: 0.7;
+
+  .buttonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+
+    button {
+      width: 150px;
+      height: 40px;
+      background: colors.$WHITE;
+      border: 1px solid red;
+      border-radius: 12px;
+    }
+  }
+}
