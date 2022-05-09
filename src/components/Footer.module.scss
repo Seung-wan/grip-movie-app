@@ -1,0 +1,16 @@
+.linkContainer {
+  display: flex;
+  width: 100%;
+
+  a {
+    width: 50%;
+
+    .linkButton {
+      color: black;
+    }
+
+    .linkButton:hover {
+      color: white;
+    }
+  }
+}
