@@ -1,79 +1,138 @@
-import { useMount, useState } from 'hooks'
-
+import { useEffect, useState, useRef, useCallback } from 'hooks'
+import store from 'store'
+import { useRecoilState } from 'recoil'
+import { useLocation } from 'react-router-dom'
 import Item from './Item'
 
 import { SearchIcon } from 'assets/svgs'
 import styles from './Movie.module.scss'
 
-import { IMovieAPIRes } from 'types/movie'
+import { Search } from 'types/movie'
+import { favoritesState } from './Favorites/recoil/movie'
 import { getMovieApi } from 'services/movie'
+import Footer from 'components/Footer'
 
 const Movie = () => {
-  const [data, setData] = useState<IMovieAPIRes>()
-  const [page, setPage] = useState(1)
+  const [favoritesList, setFavoritesList] = useRecoilState(favoritesState)
+  const [movieList, setMovieList] = useState<Search[]>([])
+  const [maxLength, setMaxLength] = useState<string>()
+  const [page, setPage] = useState(0)
   const [searchText, setSearchText] = useState('')
-  console.log(process.env.REACT_APP_MOVIE_API_KEY)
-  // apikey: string
-  // s: string
-  // page: number
-  useMount(() => {
-    getMovieApi({
-      apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
-      s: 'Iron Man',
-      page: 1,
-    })
-  })
+  const [fixedText, setFixedText] = useState('')
+  const loader = useRef(null)
+  const location = useLocation()
+
+  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
+    const target = entries[0]
+    if (target.isIntersecting) {
+      setPage((prev) => prev + 1)
+    }
+  }, [])
+
+  // scroll 다루는 useEffect
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '20px',
+      threshold: 0,
+    }
+
+    const observer = new IntersectionObserver(handleObserver, option)
+    if (loader.current) observer.observe(loader.current)
+  }, [handleObserver])
+
+  const handleChangeSearchText = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(evt.currentTarget.value)
+  }
+
+  const handleSubmitForm = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+    setPage(1)
+    console.log('page', page)
+
+    try {
+      const data = await getMovieApi({
+        apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
+        s: searchText,
+        page: 1,
+      })
+
+      setMaxLength(data.data.totalResults)
+      setMovieList(data.data.Search)
+    } catch (e) {
+      console.error(e)
+    }
+    setFixedText(searchText)
+    setSearchText('')
+  }
+
+  useEffect(() => {
+    const data = store.get('favorites')
+
+    if (data) {
+      setFavoritesList([...data])
+    }
+  }, [setFavoritesList])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getMovieApi({
+          apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
+          s: fixedText,
+          page,
+        })
+
+        // if (page === 1) setMovieList(data.data.Search)
+        setMovieList((prevState) => [...prevState, ...data.data.Search])
+      } catch (e) {
+        console.error(e)
+      }
+      setSearchText('')
+    }
+
+    if (page > 1 && page <= Number(maxLength) / 10) {
+      fetchData()
+    }
+  }, [page, maxLength])
 
   return (
     <div className={styles.container}>
       <h1>Movie Searching App</h1>
-      <form className={styles.searchForm} onSubmit={() => {}}>
-        <input type='text' placeholder='Search' />
+      <form className={styles.searchForm} onSubmit={handleSubmitForm}>
+        <input type='text' placeholder='Search' value={searchText} onChange={handleChangeSearchText} />
         <button type='submit'>
           <SearchIcon className={styles.icon} />
         </button>
       </form>
 
+      <h2>Movie List</h2>
+      {!movieList?.length && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
       <main className={styles.movieList}>
-        <h2>Movie List</h2>
-        <Item
-          img='https://m.media-amazon.com/images/M/MV5BZWNjZTJjZmYtYjhjZS00ZjgwLWFjY2UtMzBlMDkzZmM3M2FiXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg'
-          title='Iron Man'
-          year='1981'
-          type='Movie'
-        />
-
-        <Item
-          img='https://m.media-amazon.com/images/M/MV5BZWNjZTJjZmYtYjhjZS00ZjgwLWFjY2UtMzBlMDkzZmM3M2FiXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg'
-          title='Iron Man'
-          year='1981'
-          type='Movie'
-        />
-        <Item
-          img='https://m.media-amazon.com/images/M/MV5BZWNjZTJjZmYtYjhjZS00ZjgwLWFjY2UtMzBlMDkzZmM3M2FiXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg'
-          title='Iron Man'
-          year='1981'
-          type='Movie'
-        />
-        <Item
-          img='https://m.media-amazon.com/images/M/MV5BZWNjZTJjZmYtYjhjZS00ZjgwLWFjY2UtMzBlMDkzZmM3M2FiXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg'
-          title='Iron Man'
-          year='1981'
-          type='Movie'
-        />
-      </main>
-
-      <footer>
         <ul>
-          <li>
-            <button type='button'>검색</button>
-          </li>
+          {movieList &&
+            movieList?.map((item, idx) => {
+              const key = `${item.imdbID}-${idx}`
+              let isFavorite = false
 
-          <li>
-            <button type='button'>즐겨찾기</button>
-          </li>
+              if (favoritesList.find((favorite) => favorite.imdbID === item.imdbID)) isFavorite = true
+              return (
+                <Item
+                  key={key}
+                  item={item}
+                  img={item.Poster}
+                  title={item.Title}
+                  year={item.Year}
+                  type={item.Type}
+                  isFavorite={isFavorite}
+                  usedPage={location.pathname}
+                />
+              )
+            })}
         </ul>
-      </footer>
+        {movieList && <div ref={loader} />}
+      </main>
+      <Footer />
     </div>
   )
 }

@@ -3,6 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  width: 420px;
   height: 540px;
   background: #2d2f3c;
   border-radius: 24px;
@@ -25,8 +26,10 @@
     border-radius: 16px;
 
     input {
+      width: 90%;
+      height: 100%;
       padding: 0 12px;
-      color: white;
+      color: colors.$WHITE;
     }
 
     button {
@@ -37,17 +40,23 @@
     }
   }
 
+  h2 {
+    padding: 24px;
+    font-size: 20px;
+    color: colors.$WHITE;
+  }
+
+  .emptyMessage {
+    padding: 12px 24px;
+    font-size: 20px;
+    color: colors.$WHITE;
+  }
+
   .movieList {
     height: 400px;
     padding: 0 16px;
-    margin-top: 16px;
     overflow-y: scroll;
     font-size: 20px;
-
-    h2 {
-      padding: 0 8px;
-      color: colors.$WHITE;
-    }
   }
 
   footer {
