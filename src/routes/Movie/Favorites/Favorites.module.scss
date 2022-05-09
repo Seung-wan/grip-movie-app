@@ -1,0 +1,77 @@
+@use '/src/styles/constants/colors';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 420px;
+  height: 540px;
+  background: #2d2f3c;
+  border-radius: 24px;
+
+  h1 {
+    padding: 12px;
+    font-size: 24px;
+    color: colors.$GRAYD;
+    text-align: center;
+  }
+
+  .searchForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    margin: 0 16px;
+    line-height: 40px;
+    background: #2b2b36;
+    border-radius: 16px;
+
+    input {
+      width: 90%;
+      height: 100%;
+      padding: 0 12px;
+      color: colors.$WHITE;
+    }
+
+    button {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+
+  h2 {
+    padding: 24px;
+    font-size: 20px;
+    color: colors.$WHITE;
+  }
+
+  .emptyMessage {
+    padding: 12px 24px;
+    font-size: 20px;
+    color: colors.$WHITE;
+  }
+
+  .favoritesList {
+    height: 400px;
+    padding: 0 16px;
+    overflow-y: scroll;
+    font-size: 20px;
+  }
+
+  footer {
+    ul {
+      display: flex;
+      padding: 12px;
+
+      li {
+        flex: 1;
+        text-align: center;
+
+        button {
+          color: colors.$WHITE;
+        }
+      }
+    }
+  }
+}
