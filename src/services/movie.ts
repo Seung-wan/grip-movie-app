@@ -10,6 +10,6 @@ interface Params {
 }
 
 export const getMovieApi = (params: Params) =>
-  axios.get<IMovieAPIRes>(`${MOVIE_BASE_URL}`, {
+  axios.get<IMovieAPIRes>(MOVIE_BASE_URL, {
     params,
   })
