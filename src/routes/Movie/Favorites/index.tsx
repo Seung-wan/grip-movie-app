@@ -23,8 +23,8 @@ const Favorites = () => {
   return (
     <div className={styles.container}>
       <h1>Movie Searching App</h1>
-      <h2>내 즐겨찾기</h2>
 
+      <h2>내 즐겨찾기</h2>
       {!favoritesList?.length && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
       <main className={styles.favoritesList}>
         <ul>
@@ -48,6 +48,7 @@ const Favorites = () => {
             })}
         </ul>
       </main>
+
       <Footer />
     </div>
   )

@@ -101,6 +101,7 @@ const Movie = () => {
   return (
     <div className={styles.container}>
       <h1>Movie Searching App</h1>
+
       <form className={styles.searchForm} onSubmit={handleSubmitForm}>
         <input type='text' placeholder='Search' value={searchText} onChange={handleChangeSearchText} />
         <button type='submit'>
@@ -115,7 +116,6 @@ const Movie = () => {
           {movieList.map((item, idx) => {
             const key = `${item.imdbID}-${idx}`
             let isFavorite = false
-
             if (favoritesList.find((favorite) => favorite.imdbID === item.imdbID)) isFavorite = true
             return (
               <Item
@@ -133,6 +133,7 @@ const Movie = () => {
         </ul>
         {movieList && <div ref={loader} />}
       </main>
+
       <Footer />
     </div>
   )
