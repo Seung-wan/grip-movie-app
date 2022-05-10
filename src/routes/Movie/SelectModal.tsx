@@ -6,12 +6,11 @@ import styles from './SelectModal.module.scss'
 
 interface Props {
   item: Search
-  usedPage: string
   setIsClicked: (bool: boolean) => void
   isFavorite: boolean
 }
 
-const SelectModal = ({ item, usedPage, isFavorite, setIsClicked }: Props) => {
+const SelectModal = ({ item, isFavorite, setIsClicked }: Props) => {
   const [favoritesList, setFavoritesList] = useRecoilState<Search[] | []>(favoritesState)
 
   const handleClickAddFavorites = (movie: Search) => {

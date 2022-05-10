@@ -88,7 +88,7 @@ const Movie = () => {
         // if (page === 1) setMovieList(data.data.Search)
         setMovieList((prevState) => [...prevState, ...data.data.Search])
       } catch (e) {
-        console.error(e)
+        setError(true)
       }
       setSearchText('')
     }
@@ -96,7 +96,7 @@ const Movie = () => {
     if (page > 1 && page <= Number(maxLength) / 10) {
       fetchData()
     }
-  }, [page, maxLength])
+  }, [page, maxLength, fixedText])
 
   if (error) return <div>Error</div>
 

@@ -35,7 +35,7 @@ const Item = ({ ref, item, img, title, year, type, isFavorite, usedPage }: IProp
         </div>
       </button>
       {isFavorite && usedPage === '/' && <p className={styles.checkIcon}>즐겨찾기 됨</p>}
-      {isClicked && <SelectModal item={item} usedPage={usedPage} isFavorite={isFavorite} setIsClicked={setIsClicked} />}
+      {isClicked && <SelectModal item={item} isFavorite={isFavorite} setIsClicked={setIsClicked} />}
     </li>
   )
 }
