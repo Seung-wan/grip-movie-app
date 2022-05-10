@@ -11,7 +11,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Movie />} />
-            <Route path='/favorites' element={<Favorites />} />
+            <Route path='favorites' element={<Favorites />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

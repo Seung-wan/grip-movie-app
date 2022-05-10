@@ -4,7 +4,7 @@ import Item from '../Item'
 import { useRecoilState } from 'recoil'
 import { useLocation } from 'react-router-dom'
 import styles from './Favorites.module.scss'
-import { favoritesState } from './recoil/movie'
+import { favoritesState } from '../recoil/movie'
 import { Search } from 'types/movie'
 import Footer from 'components/Footer'
 

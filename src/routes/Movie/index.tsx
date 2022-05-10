@@ -32,18 +32,6 @@ const Movie = () => {
     }
   }, [])
 
-  // scroll 다루는 useEffect
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: '20px',
-      threshold: 0,
-    }
-
-    const observer = new IntersectionObserver(handleObserver, option)
-    if (loader.current) observer.observe(loader.current)
-  }, [handleObserver])
-
   const handleChangeSearchText = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(evt.currentTarget.value)
   }
@@ -77,6 +65,17 @@ const Movie = () => {
   }, [setFavoritesList])
 
   useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '20px',
+      threshold: 0,
+    }
+
+    const observer = new IntersectionObserver(handleObserver, option)
+    if (loader.current) observer.observe(loader.current)
+  }, [handleObserver])
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getMovieApi({
@@ -85,7 +84,6 @@ const Movie = () => {
           page,
         })
 
-        // if (page === 1) setMovieList(data.data.Search)
         setMovieList((prevState) => [...prevState, ...data.data.Search])
       } catch (e) {
         setError(true)
@@ -111,28 +109,27 @@ const Movie = () => {
       </form>
 
       <h2>Movie List</h2>
-      {!movieList?.length && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
+      {movieList.length === 0 && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
       <main className={styles.movieList}>
         <ul>
-          {movieList &&
-            movieList?.map((item, idx) => {
-              const key = `${item.imdbID}-${idx}`
-              let isFavorite = false
+          {movieList.map((item, idx) => {
+            const key = `${item.imdbID}-${idx}`
+            let isFavorite = false
 
-              if (favoritesList.find((favorite) => favorite.imdbID === item.imdbID)) isFavorite = true
-              return (
-                <Item
-                  key={key}
-                  item={item}
-                  img={item.Poster}
-                  title={item.Title}
-                  year={item.Year}
-                  type={item.Type}
-                  isFavorite={isFavorite}
-                  usedPage={location.pathname}
-                />
-              )
-            })}
+            if (favoritesList.find((favorite) => favorite.imdbID === item.imdbID)) isFavorite = true
+            return (
+              <Item
+                key={key}
+                item={item}
+                img={item.Poster}
+                title={item.Title}
+                year={item.Year}
+                type={item.Type}
+                isFavorite={isFavorite}
+                usedPage={location.pathname}
+              />
+            )
+          })}
         </ul>
         {movieList && <div ref={loader} />}
       </main>
