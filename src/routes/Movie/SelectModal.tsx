@@ -1,3 +1,4 @@
+import { useEffect, useRef, useCallback } from 'hooks'
 import store from 'store'
 import { useRecoilState } from 'recoil'
 import { favoritesState } from './recoil/movie'
@@ -12,6 +13,7 @@ interface Props {
 
 const SelectModal = ({ item, isFavorite, setIsClicked }: Props) => {
   const [favoritesList, setFavoritesList] = useRecoilState<Search[] | []>(favoritesState)
+  const ref = useRef<HTMLDivElement>(null)
 
   const handleClickAddFavorites = (movie: Search) => {
     store.set('favorites', [...favoritesList, movie])
@@ -29,12 +31,28 @@ const SelectModal = ({ item, isFavorite, setIsClicked }: Props) => {
     setIsClicked(false)
   }
 
-  const handleClickCloseButton = () => {
+  const handleClickCloseButton = useCallback(() => {
     setIsClicked(false)
-  }
+  }, [setIsClicked])
+
+  const handleClickOutSide = useCallback(
+    (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) {
+        handleClickCloseButton()
+      }
+    },
+    [handleClickCloseButton]
+  )
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutSide)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutSide)
+    }
+  }, [handleClickOutSide])
 
   return (
-    <div className={styles.modalContainer}>
+    <div className={styles.modalContainer} ref={ref}>
       <div className={styles.buttonWrapper}>
         {isFavorite ? (
           <button type='button' onClick={() => handleClickDeleteFavorites(item)}>
