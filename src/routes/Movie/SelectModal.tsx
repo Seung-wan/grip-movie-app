@@ -1,6 +1,6 @@
 import store from 'store'
 import { useRecoilState } from 'recoil'
-import { favoritesState } from './Favorites/recoil/movie'
+import { favoritesState } from './recoil/movie'
 import { Search } from 'types/movie'
 import styles from './SelectModal.module.scss'
 
@@ -13,14 +13,10 @@ interface Props {
 
 const SelectModal = ({ item, usedPage, isFavorite, setIsClicked }: Props) => {
   const [favoritesList, setFavoritesList] = useRecoilState<Search[] | []>(favoritesState)
-  // const ref = useRef() as React.MutableRefObject<HTMLDivElement>
 
   const handleClickAddFavorites = (movie: Search) => {
-    // setFavoritesList((prevState) => [...prevState, movie])
-
     store.set('favorites', [...favoritesList, movie])
     setFavoritesList((prevState) => [...prevState, movie])
-    // data ? store.set('favorites', [...data, movie]) : store.set('favorites', [...data, movie])
 
     setIsClicked(false)
   }
@@ -37,19 +33,6 @@ const SelectModal = ({ item, usedPage, isFavorite, setIsClicked }: Props) => {
   const handleClickCloseButton = () => {
     setIsClicked(false)
   }
-
-  // useEffect(() => {
-  //   document.body.addEventListener('click', (evt: React.BaseSyntheticEvent | MouseEvent) => {
-  //     if (ref.current !== null) {
-  //       if (ref.current.contains(evt.currentTarget)) {
-  //         return 0
-  //       }
-  //     }
-
-  //     setIsClicked(false)
-  //     return 1
-  //   })
-  // })
 
   return (
     <div className={styles.modalContainer}>

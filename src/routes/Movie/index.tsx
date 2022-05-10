@@ -1,20 +1,23 @@
 import { useEffect, useState, useRef, useCallback } from 'hooks'
-import store from 'store'
-import { useRecoilState } from 'recoil'
 import { useLocation } from 'react-router-dom'
-import Item from './Item'
+import { useRecoilState } from 'recoil'
+import store from 'store'
 
+import Item from './Item'
+import Footer from 'components/Footer'
 import { SearchIcon } from 'assets/svgs'
+
 import styles from './Movie.module.scss'
 
 import { Search } from 'types/movie'
-import { favoritesState } from './Favorites/recoil/movie'
+
 import { getMovieApi } from 'services/movie'
-import Footer from 'components/Footer'
+import { favoritesState } from './recoil/movie'
 
 const Movie = () => {
   const [favoritesList, setFavoritesList] = useRecoilState(favoritesState)
   const [movieList, setMovieList] = useState<Search[]>([])
+  const [error, setError] = useState(false)
   const [maxLength, setMaxLength] = useState<string>()
   const [page, setPage] = useState(0)
   const [searchText, setSearchText] = useState('')
@@ -48,7 +51,6 @@ const Movie = () => {
   const handleSubmitForm = async (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
     setPage(1)
-    console.log('page', page)
 
     try {
       const data = await getMovieApi({
@@ -60,7 +62,7 @@ const Movie = () => {
       setMaxLength(data.data.totalResults)
       setMovieList(data.data.Search)
     } catch (e) {
-      console.error(e)
+      setError(true)
     }
     setFixedText(searchText)
     setSearchText('')
@@ -95,6 +97,8 @@ const Movie = () => {
       fetchData()
     }
   }, [page, maxLength])
+
+  if (error) return <div>Error</div>
 
   return (
     <div className={styles.container}>

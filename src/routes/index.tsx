@@ -1,6 +1,4 @@
 import styles from './Routes.module.scss'
-// import TodoList from './TodoList'
-import Weather from './Weathers'
 import Movie from './Movie'
 import Favorites from './Movie/Favorites'
 import { RecoilRoot } from 'recoil'
