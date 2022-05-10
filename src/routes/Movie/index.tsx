@@ -1,16 +1,12 @@
-import { useEffect, useState, useRef, useCallback } from 'hooks'
 import { useLocation } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import store from 'store'
-
 import Item from './Item'
+import { useEffect, useState, useRef, useCallback } from 'hooks'
 import Footer from 'components/Footer'
 import { SearchIcon } from 'assets/svgs'
-
 import styles from './Movie.module.scss'
-
 import { Search } from 'types/movie'
-
 import { getMovieApi } from 'services/movie'
 import { favoritesState } from './recoil/movie'
 
@@ -111,10 +107,10 @@ const Movie = () => {
 
       {/* 컴포넌트 분리 예정 */}
       <h2>Movie List</h2>
-      {movieList.length === 0 && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
+      {!movieList && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
       <main className={styles.movieList}>
         <ul>
-          {movieList.map((item, idx) => {
+          {movieList?.map((item, idx) => {
             const key = `${item.imdbID}-${idx}`
             let isFavorite = false
             if (favoritesList.find((favorite) => favorite.imdbID === item.imdbID)) isFavorite = true
