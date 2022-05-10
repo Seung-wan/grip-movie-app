@@ -60,7 +60,7 @@ const Movie = () => {
     const data = store.get('favorites')
 
     if (data) {
-      setFavoritesList([...data])
+      setFavoritesList(data)
     }
   }, [setFavoritesList])
 

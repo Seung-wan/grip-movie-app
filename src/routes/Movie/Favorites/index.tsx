@@ -16,7 +16,7 @@ const Favorites = () => {
     const data = store.get('favorites')
 
     if (data) {
-      setFavoritesList([...data].reverse())
+      setFavoritesList(data.reverse())
     }
   }, [setFavoritesList])
 
