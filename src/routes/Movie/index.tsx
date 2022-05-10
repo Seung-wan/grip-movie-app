@@ -109,6 +109,7 @@ const Movie = () => {
         </button>
       </form>
 
+      {/* 컴포넌트 분리 예정 */}
       <h2>Movie List</h2>
       {movieList.length === 0 && <div className={styles.emptyMessage}>검색 결과가 없습니다.</div>}
       <main className={styles.movieList}>
