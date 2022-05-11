@@ -1,0 +1,21 @@
+@use '/src/styles/constants/colors';
+
+footer {
+  .linkContainer {
+    display: flex;
+    width: 100%;
+
+    a {
+      width: 50%;
+
+      .linkButton {
+        width: 100%;
+        color: colors.$BLACK;
+      }
+
+      .linkButton:hover {
+        color: colors.$WHITE;
+      }
+    }
+  }
+}
