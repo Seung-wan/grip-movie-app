@@ -26,6 +26,7 @@ const Item = ({ ref, item, img, title, year, type, isFavorite, usedPage }: IProp
 
   return (
     <li className={styles.itemContainer} ref={ref}>
+      {isClicked && <SelectModal item={item} isFavorite={isFavorite} setIsClicked={setIsClicked} />}
       <button className={styles.movieCard} type='button' onClick={handleClickMovie}>
         <img src={img} alt='Movie Poster' />
         <div className={styles.movieDesc}>
@@ -35,7 +36,6 @@ const Item = ({ ref, item, img, title, year, type, isFavorite, usedPage }: IProp
         </div>
       </button>
       {isFavorite && usedPage === '/' && <p className={styles.checkIcon}>즐겨찾기 됨</p>}
-      {isClicked && <SelectModal item={item} isFavorite={isFavorite} setIsClicked={setIsClicked} />}
     </li>
   )
 }
