@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, Suspense } from 'react'
+import { ChangeEvent, FormEvent } from 'react'
 import { useSetRecoilState, useRecoilState } from 'recoil'
 import store from 'store'
 import { useEffect, useState, useRef } from 'hooks'
