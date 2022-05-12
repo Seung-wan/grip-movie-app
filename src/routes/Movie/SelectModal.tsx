@@ -3,7 +3,7 @@ import store from 'store'
 import { useRecoilState } from 'recoil'
 import { favoritesState } from './recoil/movie'
 import { Search } from 'types/movie'
-import styles from './SelectModal.module.scss'
+import styles from './selectModal.module.scss'
 
 interface Props {
   item: Search
