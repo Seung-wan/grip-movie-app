@@ -1,4 +1,4 @@
-import styles from './Routes.module.scss'
+import styles from './routes.module.scss'
 import Movie from './Movie'
 import Favorites from './Movie/Favorites'
 import { RecoilRoot } from 'recoil'
