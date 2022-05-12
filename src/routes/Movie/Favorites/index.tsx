@@ -1,6 +1,6 @@
 import { useEffect } from 'hooks'
 import store from 'store'
-import styles from './Favorites.module.scss'
+import styles from './favorites.module.scss'
 import { useRecoilState } from 'recoil'
 import { favoritesState } from '../recoil/movie'
 import MovieList from '../MovieList'
