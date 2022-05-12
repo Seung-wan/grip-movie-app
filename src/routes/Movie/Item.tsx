@@ -3,7 +3,7 @@ import { Search } from 'types/movie'
 
 // import { CheckIcon, StarIcon } from 'assets/svgs'
 
-import styles from './Item.module.scss'
+import styles from './item.module.scss'
 import SelectModal from './SelectModal'
 
 interface IProps {
