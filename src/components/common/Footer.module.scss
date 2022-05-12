@@ -3,17 +3,17 @@
 footer {
   .linkContainer {
     display: flex;
-    width: 100%;
+    justify-content: space-evenly;
 
     a {
-      width: 50%;
+      li {
+        width: 80px;
+        border: 1px solid white;
+        border-radius: 12px;
+      }
 
       .linkButton {
         width: 100%;
-        color: colors.$BLACK;
-      }
-
-      .linkButton:hover {
         color: colors.$WHITE;
       }
     }
