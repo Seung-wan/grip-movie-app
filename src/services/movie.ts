@@ -13,3 +13,12 @@ export const getMovieApi = (params: Params) =>
   axios.get<IMovieAPIRes>(MOVIE_BASE_URL, {
     params,
   })
+
+export const fetchMovie = async (text: string, searchPage: number) => {
+  const data = await getMovieApi({
+    apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
+    s: text,
+    page: searchPage,
+  })
+  return data.data
+}
