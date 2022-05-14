@@ -1,0 +1,33 @@
+@use '/src/styles/constants/colors';
+
+h1 {
+  padding: 12px;
+  font-size: 24px;
+  color: colors.$GRAYD;
+  text-align: center;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin: 0 16px;
+  line-height: 40px;
+  background: #2b2b36;
+  border-radius: 16px;
+}
+
+input {
+  width: 90%;
+  height: 100%;
+  padding: 0 12px;
+  color: colors.$WHITE;
+}
+
+button {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}

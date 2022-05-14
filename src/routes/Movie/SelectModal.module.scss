@@ -7,9 +7,9 @@
   width: 388px;
   height: 253px;
   background: #2b2b36;
-  border: 2px solid red;
+  border: 2px solid colors.$BLACK;
   border-radius: 12px;
-  opacity: 0.7;
+  opacity: 0.9;
 
   .buttonWrapper {
     display: flex;
@@ -20,8 +20,10 @@
     button {
       width: 150px;
       height: 40px;
-      background: colors.$WHITE;
-      border: 1px solid red;
+      font-size: 20px;
+      color: colors.$WHITE;
+      background: #2b2b36;
+      border: 1px solid colors.$WHITE;
       border-radius: 12px;
     }
   }
