@@ -1,32 +1,35 @@
 import { useEffect, useRef, useCallback } from 'hooks'
-import store from 'store'
 import { useRecoilState } from 'recoil'
+import store from 'store'
+
 import { favoritesState } from './recoil/movie'
-import { Search } from 'types/movie'
+import { ISearch } from 'types/movie'
 import styles from './selectModal.module.scss'
 
 interface Props {
-  item: Search
+  item: ISearch
   setIsClicked: (bool: boolean) => void
   isFavorite: boolean
 }
 
 const SelectModal = ({ item, isFavorite, setIsClicked }: Props) => {
-  const [favoritesList, setFavoritesList] = useRecoilState<Search[] | []>(favoritesState)
+  const [favoritesList, setFavoritesList] = useRecoilState<ISearch[]>(favoritesState)
   const ref = useRef<HTMLDivElement>(null)
 
-  const handleClickAddFavorites = (movie: Search) => {
+  const handleClickAddFavorites = (movie: ISearch) => {
     store.set('favorites', [...favoritesList, movie])
-    setFavoritesList((prevState) => [...prevState, movie])
 
+    setFavoritesList((prevState) => [...prevState, movie])
     setIsClicked(false)
   }
 
-  const handleClickDeleteFavorites = (movie: Search) => {
+  const handleClickDeleteFavorites = (movie: ISearch) => {
     const filteredData = favoritesList.filter((favorite) => {
       return favorite.imdbID !== movie.imdbID
     })
+
     store.set('favorites', filteredData)
+
     setFavoritesList(filteredData)
     setIsClicked(false)
   }

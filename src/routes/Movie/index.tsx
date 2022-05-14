@@ -1,13 +1,15 @@
 import { ChangeEvent, FormEvent } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'hooks'
 import { useSetRecoilState } from 'recoil'
 import store from 'store'
-import { useState, useEffect, useRef, useCallback } from 'hooks'
-import Footer from 'components/common/Footer'
-import styles from './movie.module.scss'
+
 import { useFetchMovie } from 'hooks/useFetchMovie'
 import { favoritesState } from './recoil/movie'
+
+import Header from 'routes/Movie/_common/Header'
+import Footer from 'routes/Movie/_common/Footer'
 import MovieList from './MovieList'
-import Header from 'components/common/Header'
+import styles from './movie.module.scss'
 
 const Movie = () => {
   const setFavoritesList = useSetRecoilState(favoritesState)
@@ -59,8 +61,6 @@ const Movie = () => {
     }
   }, [setFavoritesList])
 
-  // if (errorMessage) return <div>error</div>
-
   return (
     <div className={styles.container}>
       <Header
@@ -75,7 +75,6 @@ const Movie = () => {
         loading={loading}
         errorMessage={errorMessage}
       />
-
       <Footer />
     </div>
   )

@@ -1,8 +1,9 @@
-import styles from './routes.module.scss'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
+
 import Movie from './Movie'
 import Favorites from './Movie/Favorites'
-import { RecoilRoot } from 'recoil'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import styles from './routes.module.scss'
 
 const App = () => {
   return (

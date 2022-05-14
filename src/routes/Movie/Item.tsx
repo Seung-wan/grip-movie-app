@@ -1,10 +1,9 @@
-import { useState } from 'hooks'
-import { ISearch } from 'types/movie'
-
 import { useLocation } from 'react-router-dom'
+import { useState } from 'hooks'
 
-import styles from './item.module.scss'
 import SelectModal from './SelectModal'
+import { ISearch } from 'types/movie'
+import styles from './item.module.scss'
 
 interface IProps {
   ref?: any

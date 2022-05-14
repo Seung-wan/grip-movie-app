@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'hooks'
 import { useRecoilState } from 'recoil'
+
 import { movieListState } from '../routes/Movie/recoil/movie'
 import { getMovieApi } from 'services/movie'
 
@@ -34,5 +35,5 @@ export const useFetchMovie = (query: string, pageNumber: number) => {
       fetchData()
     }
   }, [query, pageNumber, setMovieList])
-  return { loading, hasMore, errorMessage, movieList }
+  return { movieList, hasMore, loading, errorMessage }
 }

@@ -1,12 +1,12 @@
 import { atom } from 'recoil'
-import { Search } from 'types/movie'
+import { ISearch } from 'types/movie'
 
-export const movieListState = atom<Search[]>({
+export const movieListState = atom<ISearch[]>({
   key: '#movieListState',
   default: [],
 })
 
-export const favoritesState = atom<Search[]>({
+export const favoritesState = atom<ISearch[]>({
   key: '#favoritesState',
   default: [],
 })

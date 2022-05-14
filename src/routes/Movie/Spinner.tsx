@@ -1,7 +1,5 @@
 import { TailSpin } from 'react-loader-spinner'
 
-const Spinner = () => {
+export const TailSpinner = () => {
   return <TailSpin ariaLabel='loading-indicator' />
 }
-
-export default Spinner

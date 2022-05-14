@@ -1,11 +1,12 @@
-import { useRef, useEffect } from 'hooks'
 import { useLocation } from 'react-router-dom'
+import { useRef, useEffect } from 'hooks'
+import { useRecoilValue } from 'recoil'
+
 import Item from './Item'
-import styles from './movieList.module.scss'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { favoritesState, movieListState } from './recoil/movie'
+import { TailSpinner } from './Spinner'
+import { favoritesState } from './recoil/movie'
 import { ISearch } from 'types/movie'
-import { TailSpin } from 'react-loader-spinner'
+import styles from './movieList.module.scss'
 
 interface Props {
   movieList: ISearch[]
@@ -17,7 +18,6 @@ interface Props {
 
 const MovieList = ({ movieList, fixedText, loading, scrollRef, errorMessage }: Props) => {
   const favoritesList = useRecoilValue(favoritesState)
-  // const [movieList, setMovieList] = useRecoilState(movieListState)
   const location = useLocation()
   const movieListTopRef = useRef<HTMLDivElement>(null)
 
@@ -54,7 +54,7 @@ const MovieList = ({ movieList, fixedText, loading, scrollRef, errorMessage }: P
             />
           )
         })}
-        <li ref={scrollRef}>{loading && <TailSpin />}</li>
+        <li ref={scrollRef}>{loading && <TailSpinner />}</li>
       </ul>
     </main>
   )

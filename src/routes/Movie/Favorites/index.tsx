@@ -1,11 +1,12 @@
 import { useEffect } from 'hooks'
-import store from 'store'
-import styles from './favorites.module.scss'
 import { useRecoilState } from 'recoil'
-import { favoritesState } from '../recoil/movie'
+import store from 'store'
+
 import MovieList from '../MovieList'
-import Footer from 'components/common/Footer'
-import Header from 'components/common/Header'
+import Footer from 'routes/Movie/_common/Footer'
+import Header from 'routes/Movie/_common/Header'
+import { favoritesState } from '../recoil/movie'
+import styles from './favorites.module.scss'
 
 const Favorites = () => {
   const [favoritesList, setFavoritesList] = useRecoilState(favoritesState)
@@ -21,9 +22,7 @@ const Favorites = () => {
   return (
     <div className={styles.container}>
       <Header />
-
       <MovieList movieList={favoritesList} />
-
       <Footer />
     </div>
   )
