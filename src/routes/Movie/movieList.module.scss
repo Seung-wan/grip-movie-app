@@ -6,6 +6,13 @@ h2 {
   color: colors.$WHITE;
 }
 
+.errorMessage {
+  height: 400px;
+  padding: 12px 24px;
+  font-size: 20px;
+  color: colors.$WHITE;
+}
+
 .emptyMessage {
   padding: 12px 24px;
   font-size: 20px;
