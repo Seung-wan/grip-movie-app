@@ -1,24 +1,30 @@
 import { axios } from 'hooks/worker'
-import { IMovieAPIRes } from 'types/movie.d'
+import { IMovieAPIRes, ISearch } from 'types/movie.d'
 
 const MOVIE_BASE_URL = 'https://www.omdbapi.com'
+const API_KEY = process.env.REACT_APP_MOVIE_API_KEY
 
-interface Params {
-  apikey: string
-  s: string
-  page: number
-}
+export const getMovieApi = async (s: string, page: number) => {
+  const data = await axios
+    .get<IMovieAPIRes>(MOVIE_BASE_URL, {
+      params: {
+        apikey: API_KEY,
+        s,
+        page,
+      },
+    })
+    .then((res) => {
+      const response = res.data.Response === 'True'
+      const search = res.data.Search?.reduce((acc: ISearch[], cur: ISearch) => {
+        // 영화 리스트에 중복이 있으면 무시
+        if (acc.findIndex((el) => el.imdbID === cur.imdbID) === -1) acc.push(cur)
 
-export const getMovieApi = (params: Params) =>
-  axios.get<IMovieAPIRes>(MOVIE_BASE_URL, {
-    params,
-  })
+        return acc
+      }, [])
+      const error = String(res.data.Error) ?? ''
+      const totalResults = res.data.totalResults ?? 0
+      return { response, search, error, totalResults }
+    })
 
-export const fetchMovie = async (text: string, searchPage: number) => {
-  const data = await getMovieApi({
-    apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
-    s: text,
-    page: searchPage,
-  })
-  return data.data
+  return { ...data }
 }
