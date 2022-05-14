@@ -1,26 +1,23 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { useSetRecoilState, useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import store from 'store'
-import { useEffect, useState, useRef } from 'hooks'
+import { useState, useEffect, useRef, useCallback } from 'hooks'
 import Footer from 'components/common/Footer'
-import styles from './Movie.module.scss'
-import { Search } from 'types/movie'
-import { getMovieApi } from 'services/movie'
-import { movieListState, favoritesState } from './recoil/movie'
+import styles from './movie.module.scss'
+import { useFetchMovie } from 'hooks/useFetchMovie'
+import { favoritesState } from './recoil/movie'
 import MovieList from './MovieList'
 import Header from 'components/common/Header'
 
 const Movie = () => {
   const setFavoritesList = useSetRecoilState(favoritesState)
-  const [movieList, setMovieList] = useRecoilState<Search[]>(movieListState)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [maxLength, setMaxLength] = useState('')
-  const [page, setPage] = useState(0)
+
+  const [page, setPage] = useState(1)
   const [searchText, setSearchText] = useState('')
   const [fixedText, setFixedText] = useState('')
+  const { movieList, hasMore, loading, errorMessage } = useFetchMovie(fixedText, page)
 
-  const loader = useRef(null)
+  const scrollRef = useRef<HTMLLIElement>(null)
 
   const handleChangeSearchText = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchText(evt.currentTarget.value)
@@ -28,24 +25,31 @@ const Movie = () => {
 
   const handleSubmitForm = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-
-    try {
-      setIsLoading(true)
-      const data = await getMovieApi({
-        apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
-        s: searchText,
-        page: 1,
-      })
-
-      setMaxLength(data.data.totalResults)
-      setMovieList(data.data.Search)
-      setIsLoading(false)
-    } catch (e) {
-      setError(true)
-    }
+    setPage(1)
     setFixedText(searchText)
     setSearchText('')
   }
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (loading) return
+
+      if (entries[0].isIntersecting && hasMore) {
+        setPage((prev) => prev + 1)
+      }
+    },
+    [hasMore, loading]
+  )
+
+  useEffect(() => {
+    let observer: IntersectionObserver
+
+    if (scrollRef.current) {
+      observer = new IntersectionObserver(handleObserver, { threshold: 0.5 })
+      observer.observe(scrollRef.current)
+    }
+    return () => observer && observer.disconnect()
+  }, [scrollRef, handleObserver])
 
   useEffect(() => {
     const data = store.get('favorites')
@@ -55,52 +59,7 @@ const Movie = () => {
     }
   }, [setFavoritesList])
 
-  const handleObserver = (entries: IntersectionObserverEntry[]) => {
-    const target = entries[0]
-    if (target.isIntersecting) {
-      setPage((prev) => prev + 1)
-    }
-  }
-
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0,
-    }
-
-    const observer = new IntersectionObserver(handleObserver, option)
-    if (loader.current) observer.observe(loader.current)
-  }, [])
-
-  useEffect(() => {
-    setPage(0)
-  }, [fixedText])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true)
-        const data = await getMovieApi({
-          apikey: String(process.env.REACT_APP_MOVIE_API_KEY),
-          s: fixedText,
-          page,
-        })
-
-        setMovieList((prevState) => [...prevState, ...data.data.Search])
-        setIsLoading(false)
-      } catch (e) {
-        setError(true)
-      }
-      setSearchText('')
-    }
-
-    if (page > 1 && page <= Number(maxLength) / 10) {
-      fetchData()
-    }
-  }, [page])
-
-  if (error) return <div>Error</div>
+  // if (errorMessage) return <div>error</div>
 
   return (
     <div className={styles.container}>
@@ -109,7 +68,14 @@ const Movie = () => {
         handleChangeSearchText={handleChangeSearchText}
         handleSubmitForm={handleSubmitForm}
       />
-      <MovieList movieList={movieList} loader={loader} fixedText={fixedText} isLoading={isLoading} />
+      <MovieList
+        movieList={movieList}
+        scrollRef={scrollRef}
+        fixedText={fixedText}
+        loading={loading}
+        errorMessage={errorMessage}
+      />
+
       <Footer />
     </div>
   )
