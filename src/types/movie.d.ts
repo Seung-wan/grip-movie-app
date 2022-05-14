@@ -1,10 +1,10 @@
 export interface IMovieAPIRes {
-  Search: Search[]
+  Search: ISearch[]
   totalResults: string
   Response: string
+  Error?: boolean
 }
-
-export interface Search {
+export interface ISearch {
   Title: string
   Year: string
   imdbID: string
