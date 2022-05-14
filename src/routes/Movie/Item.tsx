@@ -8,14 +8,10 @@ import styles from './item.module.scss'
 interface IProps {
   ref?: any
   item: ISearch
-  img: string
-  title: string
-  year: string
-  type: string
   isFavorite: boolean
 }
 
-const Item = ({ ref, item, img, title, year, type, isFavorite }: IProps) => {
+const Item = ({ ref, item, isFavorite }: IProps) => {
   const [isClicked, setIsClicked] = useState(false)
   const location = useLocation()
 
@@ -27,11 +23,11 @@ const Item = ({ ref, item, img, title, year, type, isFavorite }: IProps) => {
     <li className={styles.itemContainer} ref={ref}>
       {isClicked && <SelectModal item={item} isFavorite={isFavorite} setIsClicked={setIsClicked} />}
       <button className={styles.movieCard} type='button' onClick={handleClickMovie}>
-        <img src={img} alt='Movie Poster' />
+        <img src={item.Poster} alt='Movie Poster' />
         <div className={styles.movieDesc}>
-          <h3>{title}</h3>
-          <p className={styles.movieYear}>{year}</p>
-          <p className={styles.movieType}>{type}</p>
+          <h3>{item.Title}</h3>
+          <p className={styles.movieYear}>{item.Year}</p>
+          <p className={styles.movieType}>{item.Type}</p>
         </div>
       </button>
       {isFavorite && location.pathname === '/' && <p className={styles.checkIcon}>즐겨찾기 됨</p>}

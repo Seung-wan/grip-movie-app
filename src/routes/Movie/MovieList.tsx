@@ -46,10 +46,6 @@ const MovieList = ({ movieList, fixedText, loading, scrollRef, errorMessage }: P
             <Item
               key={key}
               item={item}
-              img={item.Poster}
-              title={item.Title}
-              year={item.Year}
-              type={item.Type}
               isFavorite={!!favoritesList.find((favorite) => favorite.imdbID === item.imdbID)}
             />
           )
