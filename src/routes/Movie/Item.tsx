@@ -1,24 +1,24 @@
 import { useState } from 'hooks'
-import { Search } from 'types/movie'
+import { ISearch } from 'types/movie'
 
-// import { CheckIcon, StarIcon } from 'assets/svgs'
+import { useLocation } from 'react-router-dom'
 
 import styles from './item.module.scss'
 import SelectModal from './SelectModal'
 
 interface IProps {
   ref?: any
-  item: Search
+  item: ISearch
   img: string
   title: string
   year: string
   type: string
   isFavorite: boolean
-  usedPage: string
 }
 
-const Item = ({ ref, item, img, title, year, type, isFavorite, usedPage }: IProps) => {
+const Item = ({ ref, item, img, title, year, type, isFavorite }: IProps) => {
   const [isClicked, setIsClicked] = useState(false)
+  const location = useLocation()
 
   const handleClickMovie = () => {
     setIsClicked((prevState) => !prevState)
@@ -35,7 +35,7 @@ const Item = ({ ref, item, img, title, year, type, isFavorite, usedPage }: IProp
           <p className={styles.movieType}>{type}</p>
         </div>
       </button>
-      {isFavorite && usedPage === '/' && <p className={styles.checkIcon}>즐겨찾기 됨</p>}
+      {isFavorite && location.pathname === '/' && <p className={styles.checkIcon}>즐겨찾기 됨</p>}
     </li>
   )
 }
