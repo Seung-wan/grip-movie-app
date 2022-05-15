@@ -48,7 +48,14 @@
  ┣ 📜react-app-env.d.ts      
  ┣ 📜reportWebVitals.ts             
  ┗ 📜setupTests.ts
+ 
+
+
 
 ## 기능
 - 영화 검색
 - 즐겨찾기 등록
+
+
+![movie_low_gif](https://user-images.githubusercontent.com/51105841/168458771-0142b606-5dc4-4c1d-a7eb-7a56f5e59453.gif)
+
