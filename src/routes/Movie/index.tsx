@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { useState, useEffect, useRef, useCallback } from 'hooks'
+import { useState, useEffect, useRef } from 'hooks'
 import { useSetRecoilState } from 'recoil'
 import store from 'store'
 
@@ -32,27 +32,6 @@ const Movie = () => {
     setSearchText('')
   }
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      if (loading) return
-
-      if (entries[0].isIntersecting && hasMore) {
-        setPage((prev) => prev + 1)
-      }
-    },
-    [hasMore, loading]
-  )
-
-  useEffect(() => {
-    let observer: IntersectionObserver
-
-    if (scrollRef.current) {
-      observer = new IntersectionObserver(handleObserver, { threshold: 0.5 })
-      observer.observe(scrollRef.current)
-    }
-    return () => observer && observer.disconnect()
-  }, [scrollRef, handleObserver])
-
   useEffect(() => {
     const data = store.get('favorites')
 
@@ -60,6 +39,24 @@ const Movie = () => {
       setFavoritesList(data)
     }
   }, [setFavoritesList])
+
+  useEffect(() => {
+    let observer: IntersectionObserver
+
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      if (loading) return
+
+      if (entries[0].isIntersecting && hasMore) {
+        setPage((prev) => prev + 1)
+      }
+    }
+
+    if (scrollRef.current) {
+      observer = new IntersectionObserver(handleObserver, { threshold: 0.5 })
+      observer.observe(scrollRef.current)
+    }
+    return () => observer && observer.disconnect()
+  }, [scrollRef, hasMore, loading])
 
   return (
     <div className={styles.container}>
