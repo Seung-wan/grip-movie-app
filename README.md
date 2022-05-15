@@ -1,6 +1,14 @@
-## 그립 - 개인과제
+## 영화 검색 및 즐겨찾기 React 앱
 
-### [진행중인 페이지](https://grip-movie-app.vercel.app/)
+### [배포한 페이지](https://grip-movie-app.vercel.app/)
+
+## 개발 환경
+### React 18 + TypeScript + Recoil
+
+### axios : Promise 기반의 HTTP 통신 라이브러리
+### store : localStorage를 직렬화, 역직렬화 없이 간편하게 사용 할 수 있게 해준다.
+
+## 폴더 구조
 📦src  
  ┣ 📂assets  
  ┣ 📂components  
@@ -39,4 +47,8 @@
  ┣ 📜logo.svg       
  ┣ 📜react-app-env.d.ts      
  ┣ 📜reportWebVitals.ts             
- ┗ 📜setupTests.ts 
+ ┗ 📜setupTests.ts
+
+## 기능
+- 영화 검색
+- 즐겨찾기 등록
